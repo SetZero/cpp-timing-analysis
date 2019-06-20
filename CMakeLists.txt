@@ -17,7 +17,7 @@ endif(UNIX)
 
 find_package(Poco COMPONENTS JSON XML CONFIG REQUIRED)
 
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} main.cpp src/StateMachine/FiniteStateMachine.h src/StateMachine/BaseState.h src/StateMachine/States/Demo.cpp src/StateMachine/States/Demo.h src/StateMachine/States/Demo2.cpp src/StateMachine/States/Demo2.h)
 target_link_libraries(${PROJECT_NAME} Poco::JSON Poco::XML)
 
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
