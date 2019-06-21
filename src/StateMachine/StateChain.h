@@ -22,17 +22,15 @@ public:
     }
 
     void addChain(T startState, T endState) {
-        mStates[startState].emplace_back( endState, std::nullopt );
+        mStates[startState].push_back( {endState, std::nullopt} );
     }
 
-    template<typename F>
-    void addChain(T startState, T endState, F condition) {
-        mStates[startState].emplace_back( endState, condition );
+    void addChain(T startState, T endState, const std::function<bool()>& condition) {
+        mStates[startState].push_back( {endState, condition} );
     }
 
-    template<typename F>
-    void addChain(T startState, F condition) {
-        mStates[startState].emplace_back( std::nullopt, condition );
+    void addChain(T startState, const std::function<bool()>& condition) {
+        mStates[startState].push_back( StateInfo<T>{std::nullopt, condition} );
     }
 
     std::optional<T> next() noexcept {

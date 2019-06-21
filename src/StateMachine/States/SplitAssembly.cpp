@@ -5,7 +5,7 @@
 #include "includes/SplitAssembly.h"
 
 void SplitAssembly::execute() noexcept {
-
+    std::cout << "Split Assembly" << std::endl;
 }
 
 SplitAssembly::SplitAssembly(ProcessDatabase &pd) noexcept  : BaseState{pd} {

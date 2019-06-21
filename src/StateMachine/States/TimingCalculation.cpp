@@ -5,7 +5,7 @@
 #include "includes/TimingCalculation.h"
 
 void TimingCalculation::execute() noexcept {
-
+    std::cout << "Timing Calculation" << std::endl;
 }
 
 TimingCalculation::TimingCalculation(ProcessDatabase &pd) noexcept : BaseState{pd} {
