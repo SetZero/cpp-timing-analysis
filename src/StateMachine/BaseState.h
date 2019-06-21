@@ -1,16 +1,9 @@
-//
-// Created by sebastian on 21.06.19.
-//
-
 #pragma once
 
-
 class BaseState {
-public:
-    virtual void execute() = 0;
-
     virtual ~BaseState() = default;
+
+    virtual BaseState next() noexcept = 0;
+
+    [[nodicard]] virtual const BaseState& current() const noexcept = 0;
 };
-
-
-
