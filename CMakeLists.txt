@@ -17,7 +17,7 @@ endif(UNIX)
 
 find_package(Poco COMPONENTS JSON XML CONFIG REQUIRED)
 
-add_executable(${PROJECT_NAME} main.cpp src/StateMachine/FiniteStateMachine.h src/StateMachine/BaseState.h src/StateMachine/States/Demo.cpp src/StateMachine/States/Demo.h src/StateMachine/States/Demo2.cpp src/StateMachine/States/Demo2.h)
+add_executable(${PROJECT_NAME} main.cpp src/StateMachine/DataHolder/ProcessDatabase.cpp src/StateMachine/DataHolder/ProcessDatabase.h src/StateMachine/States/LoadAssembly.cpp src/StateMachine/States/includes/LoadAssembly.h src/StateMachine/States/SplitAssembly.cpp src/StateMachine/States/includes/SplitAssembly.h src/StateMachine/States/CleanupAssembly.cpp src/StateMachine/States/includes/CleanupAssembly.h src/StateMachine/States/ParseAssembly.cpp src/StateMachine/States/includes/ParseAssembly.h src/StateMachine/States/TimingCalculation.cpp src/StateMachine/States/includes/TimingCalculation.h src/StateMachine/States/TimingInsertion.cpp src/StateMachine/States/includes/TimingInsertion.h)
 target_link_libraries(${PROJECT_NAME} Poco::JSON Poco::XML)
 
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD

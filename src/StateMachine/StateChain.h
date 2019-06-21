@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include "BaseState.h"
 
 template<typename T>
 class StateChain {
@@ -16,6 +17,24 @@ public:
     void addChain(T startState, T endState, F condition) {
 
     }
+
+    template<typename F>
+    void addChain(T startState, F condition) {
+
+    }
+
+    BaseState& next() noexcept {
+
+    }
+
+    [[nodiscard]] const BaseState& current() const noexcept {
+
+    }
+
+    [[nodiscard]] BaseState& current() noexcept {
+
+    }
+
 private:
-    std::shared_ptr<T> mCurrent = nullptr;
+    T mCurrent = nullptr;
 };

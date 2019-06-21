@@ -1,9 +1,15 @@
 #pragma once
 
+#include "DataHolder/ProcessDatabase.h"
+
 class BaseState {
+public:
+    explicit BaseState(ProcessDatabase& pd) : mProcessDatabase{pd} {};
+
     virtual ~BaseState() = default;
 
-    virtual BaseState next() noexcept = 0;
+    virtual void execute() noexcept = 0;
 
-    [[nodicard]] virtual const BaseState& current() const noexcept = 0;
+protected:
+    ProcessDatabase& mProcessDatabase;
 };
