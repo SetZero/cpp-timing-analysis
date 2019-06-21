@@ -19,3 +19,15 @@ void ProcessDatabase::fileContents(const std::string &fileLocation) noexcept {
 std::string ProcessDatabase::fileContents() const noexcept {
     return mFileContent;
 }
+
+const std::vector<std::string> &ProcessDatabase::getSections() const noexcept {
+    return mSections;
+}
+
+void ProcessDatabase::addSection(const std::string &section) noexcept {
+    mSections.push_back(section);
+}
+
+void ProcessDatabase::clearSections() noexcept {
+    mSections.clear();
+}

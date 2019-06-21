@@ -86,10 +86,10 @@ _ZN3lib8software12SoftwareUartINS_3avr9ATMega328ELi0ELNS0_14SoftUartMethodE3EE11
 	.loc 2 30 30 view .LVU15
 	sbic 0x9,0
 	rjmp .L4
-	.loc 2 31 30 view .LVU16
+	.loc 2 31 26 view .LVU16
 /* #APP */
  ;  31 "/mnt/e/Dokumente/seafile/Seafile/Seafile/Main/Dokumente/Projekte/untitled1/src/software/uart/implementation/TimingBasedUart.h" 1
-	;START_MEASUREMENT_1
+	;START_MEASUREMENT
  ;  0 "" 2
 	.loc 2 29 17 view .LVU17
 /* #NOAPP */
@@ -98,12 +98,12 @@ _ZN3lib8software12SoftwareUartINS_3avr9ATMega328ELi0ELNS0_14SoftUartMethodE3EE11
 .L5:
 .LVL3:
 	.loc 2 33 21 view .LVU18
-	adiw r24,43
+	adiw r24,42
 .LVL4:
-	.loc 2 33 61 view .LVU19
+	.loc 2 33 55 view .LVU19
 /* #APP */
  ;  33 "/mnt/e/Dokumente/seafile/Seafile/Seafile/Main/Dokumente/Projekte/untitled1/src/software/uart/implementation/TimingBasedUart.h" 1
-	;TIMING_CONSTANT_1
+	;TIMING_CONSTANT
  ;  0 "" 2
 /* #NOAPP */
 .LBB105:
@@ -129,10 +129,10 @@ _ZN3lib8software12SoftwareUartINS_3avr9ATMega328ELi0ELNS0_14SoftUartMethodE3EE11
 	.loc 2 34 26 view .LVU25
 	sbis 0x9,0
 	rjmp .L5
-	.loc 2 35 29 view .LVU26
+	.loc 2 35 25 view .LVU26
 /* #APP */
  ;  35 "/mnt/e/Dokumente/seafile/Seafile/Seafile/Main/Dokumente/Projekte/untitled1/src/software/uart/implementation/TimingBasedUart.h" 1
-	;STOP_MEASUREMENT_1
+	;STOP_MEASUREMENT
  ;  0 "" 2
 /* #NOAPP */
 .L6:
@@ -159,20 +159,20 @@ _ZN3lib8software12SoftwareUartINS_3avr9ATMega328ELi0ELNS0_14SoftUartMethodE3EE11
 	.loc 2 36 30 view .LVU32
 	sbic 0x9,0
 	rjmp .L6
-	.loc 2 37 30 view .LVU33
+	.loc 2 37 26 view .LVU33
 /* #APP */
  ;  37 "/mnt/e/Dokumente/seafile/Seafile/Seafile/Main/Dokumente/Projekte/untitled1/src/software/uart/implementation/TimingBasedUart.h" 1
-	;START_MEASUREMENT_2
+	;START_MEASUREMENT
  ;  0 "" 2
 /* #NOAPP */
 .L7:
 	.loc 2 39 21 view .LVU34
-	sbiw r24,44
+	sbiw r24,42
 .LVL7:
-	.loc 2 39 61 view .LVU35
+	.loc 2 39 55 view .LVU35
 /* #APP */
  ;  39 "/mnt/e/Dokumente/seafile/Seafile/Seafile/Main/Dokumente/Projekte/untitled1/src/software/uart/implementation/TimingBasedUart.h" 1
-	;TIMING_CONSTANT_2
+	;TIMING_CONSTANT
  ;  0 "" 2
 /* #NOAPP */
 .LBB115:
@@ -198,10 +198,10 @@ _ZN3lib8software12SoftwareUartINS_3avr9ATMega328ELi0ELNS0_14SoftUartMethodE3EE11
 	.loc 2 40 26 view .LVU41
 	sbis 0x9,0
 	rjmp .L7
-	.loc 2 41 29 view .LVU42
+	.loc 2 41 25 view .LVU42
 /* #APP */
  ;  41 "/mnt/e/Dokumente/seafile/Seafile/Seafile/Main/Dokumente/Projekte/untitled1/src/software/uart/implementation/TimingBasedUart.h" 1
-	;STOP_MEASUREMENT_2
+	;STOP_MEASUREMENT
  ;  0 "" 2
 	.loc 2 42 17 view .LVU43
 /* #NOAPP */

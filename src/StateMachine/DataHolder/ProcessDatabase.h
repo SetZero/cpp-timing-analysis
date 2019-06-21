@@ -12,6 +12,7 @@ class ProcessDatabase {
 private:
     std::string mAssemblyLocation;
     std::string mFileContent;
+    std::vector<std::string> mSections;
 public:
     void fileLocation(const std::string& fileLocation) noexcept;
 
@@ -20,6 +21,12 @@ public:
     void fileContents(const std::string& fileLocation) noexcept;
 
     [[nodiscard]] std::string fileContents() const noexcept;
+
+    void addSection(const std::string& section) noexcept;
+
+    void clearSections() noexcept;
+
+    [[nodiscard]] const std::vector<std::string>& getSections() const noexcept;
 };
 
 
