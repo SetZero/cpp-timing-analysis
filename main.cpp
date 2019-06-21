@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <clara.hpp>
 #include "src/StateMachine/DataHolder/ProcessDatabase.h"
 #include "src/StateMachine/StateChain.h"
 #include "src/StateMachine/BaseState.h"
@@ -38,10 +39,7 @@ int main() {
     machine.add(d1, d2);
     machine.add(d2, d1);*/
 
-    for(;;) {
+    do {
         stateChain.current()->execute();
-        if (!stateChain.next()) {
-            break;
-        }
-    }
+    } while (stateChain.next());
 }

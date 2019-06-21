@@ -13,5 +13,6 @@ SplitAssembly::SplitAssembly(ProcessDatabase &pd) noexcept  : BaseState{pd} {
 }
 
 int SplitAssembly::remainingSplits() {
-    return 0;
+    static size_t counter = 2;
+    return counter--;
 }

@@ -5,10 +5,11 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 class ProcessDatabase {
 private:
-    std::vector<int> mTest;
+    std::string mFileContent;
 };
 
 
