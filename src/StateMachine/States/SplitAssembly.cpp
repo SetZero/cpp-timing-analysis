@@ -5,7 +5,7 @@
 #include "includes/SplitAssembly.h"
 
 void SplitAssembly::execute() noexcept {
-    std::cout << "Split Assembly" << std::endl;
+    std::cout << "--- [ Split Assembly ] ---" << std::endl;
 }
 
 SplitAssembly::SplitAssembly(ProcessDatabase &pd) noexcept  : BaseState{pd} {
@@ -13,6 +13,5 @@ SplitAssembly::SplitAssembly(ProcessDatabase &pd) noexcept  : BaseState{pd} {
 }
 
 int SplitAssembly::remainingSplits() {
-    static size_t counter = 2;
-    return counter--;
+    return 0;
 }
