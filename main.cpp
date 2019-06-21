@@ -39,7 +39,9 @@ int main() {
     machine.add(d2, d1);*/
 
     for(;;) {
-        stateChain.current().execute();
-        stateChain.next();
+        stateChain.current()->execute();
+        if (!stateChain.next()) {
+            break;
+        }
     }
 }
