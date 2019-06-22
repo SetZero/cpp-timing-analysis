@@ -15,6 +15,7 @@ void SplitAssembly::execute() noexcept {
         start = content.find(START_DELIMITER, start + START_DELIMITER.size());
         stop = content.find(STOP_DELIMITER, stop + STOP_DELIMITER.size());
     }
+    std::cout << "Split into " << mProcessDatabase.getSections().size() << " sections!"<< std::endl;
 }
 
 SplitAssembly::SplitAssembly(ProcessDatabase &pd) noexcept  : BaseState{pd} {

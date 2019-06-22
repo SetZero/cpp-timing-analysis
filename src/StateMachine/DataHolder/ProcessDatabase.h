@@ -13,6 +13,7 @@ private:
     std::string mAssemblyLocation;
     std::string mFileContent;
     std::vector<std::string> mSections;
+    std::string mCurrentAssembly;
 public:
     void fileLocation(const std::string& fileLocation) noexcept;
 
@@ -27,6 +28,12 @@ public:
     void clearSections() noexcept;
 
     [[nodiscard]] const std::vector<std::string>& getSections() const noexcept;
+
+    [[nodiscard]] const std::string popSection() noexcept;
+
+    [[nodiscard]] std::string currentAssembly() const noexcept;
+
+    void currentAssembly(const std::string& assembly) noexcept;
 };
 
 

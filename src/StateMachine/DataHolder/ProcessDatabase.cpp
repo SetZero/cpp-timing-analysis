@@ -31,3 +31,17 @@ void ProcessDatabase::addSection(const std::string &section) noexcept {
 void ProcessDatabase::clearSections() noexcept {
     mSections.clear();
 }
+
+const std::string ProcessDatabase::popSection() noexcept {
+    const auto back = mSections.back();
+    mSections.pop_back();
+    return back;
+}
+
+void ProcessDatabase::currentAssembly(const std::string &assembly) noexcept {
+    mCurrentAssembly = assembly;
+}
+
+std::string ProcessDatabase::currentAssembly() const noexcept {
+    return mCurrentAssembly;
+}
