@@ -45,3 +45,15 @@ void ProcessDatabase::currentAssembly(const std::string &assembly) noexcept {
 std::string ProcessDatabase::currentAssembly() const noexcept {
     return mCurrentAssembly;
 }
+
+const std::vector<std::vector<std::string>> &ProcessDatabase::currentparsedAssembly() const noexcept {
+    return mCurrentParsedAssembly;
+}
+
+void ProcessDatabase::addParsedAssembly(const std::vector<std::string> &assembly) noexcept {
+    mCurrentParsedAssembly.emplace_back(assembly);
+}
+
+void ProcessDatabase::clearParsedAssembly() {
+    mCurrentParsedAssembly.clear();
+}

@@ -10,8 +10,12 @@ void CleanupAssembly::execute() noexcept {
         auto& section = mProcessDatabase.popSection();
         std::stringstream result;
         std::regex_replace(std::ostream_iterator<char>(result), section.begin(), section.end(), mLabel, "");
-        mProcessDatabase.currentAssembly(result.str());
-    } catch (std::regex_error e) {
+        std::string str = result.str();
+        str.erase(std::unique(str.begin(), str.end(),
+                              [] (char a, char b) {return a == '\n' && b == '\n';}),
+                  str.end());
+        mProcessDatabase.currentAssembly(str);
+    } catch (std::regex_error& e) {
         std::cout << "Error: " << e.what() << std::endl;
     }
 }

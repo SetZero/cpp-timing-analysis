@@ -5,7 +5,26 @@
 #include "includes/ParseAssembly.h"
 
 void ParseAssembly::execute() noexcept {
-    std::cout << "Parse Assembly" << std::endl;
+    std::cout << "--- [ Parse Assembly ] ---" << std::endl;
+    mProcessDatabase.clearParsedAssembly();
+    std::string currentAssembly = mProcessDatabase.currentAssembly();
+
+    std::vector<std::string> lines;
+    utils::split(lines, currentAssembly, '\n');
+    std::vector<std::string> tmpVector;
+    for(const auto& v : lines) {
+        tmpVector.clear();
+        utils::split(tmpVector, v, ' ');
+
+        mProcessDatabase.addParsedAssembly(tmpVector);
+    }
+
+    for(const auto& v1 : mProcessDatabase.currentparsedAssembly()) {
+        for(const auto& v2 : v1) {
+            std::cout << v2 << " | ";
+        }
+        std::cout << std::endl;
+    }
 }
 
 ParseAssembly::ParseAssembly(ProcessDatabase &pd) noexcept  : BaseState{pd} {

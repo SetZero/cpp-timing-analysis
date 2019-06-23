@@ -8,12 +8,12 @@
 
 #include "../../BaseState.h"
 #include "../../DataHolder/ProcessDatabase.h"
+#include "../../../utils/stringUtils.h"
 
 class ParseAssembly : public BaseState {
 public:
     explicit ParseAssembly(ProcessDatabase& pd) noexcept;
-    virtual void execute() noexcept override;
-
+    void execute() noexcept override;
 };
 
 

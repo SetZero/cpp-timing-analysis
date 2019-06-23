@@ -7,6 +7,7 @@
 #include <iostream>
 #include <regex>
 #include <sstream>
+#include <algorithm>
 
 #include "../../BaseState.h"
 #include "../../DataHolder/ProcessDatabase.h"
@@ -17,10 +18,11 @@ public:
     explicit CleanupAssembly(ProcessDatabase& pd) noexcept;
     void execute() noexcept override;
 private:
-    static constexpr auto LABEL_REGEX = R"((?:\.L(?:(?:[B|F|V][B|E|I|L]))[0-9]+:\n?)|)"
-                                        R"((?:\s?\.loc (?:[0-9]+\s){3}[A-Za-z_-]+(?:.*?)\.[0-9A-Z]+\n?)|)"
+    static constexpr auto LABEL_REGEX = R"((?:(\s+)?\.L(?:(?:[B|F|V][B|E|I|L]))[0-9]+:\n?)|)"
+                                        R"((?:(\s+)?\.loc (?:[0-9]+\s){3}[A-Za-z_-]+(?:.*?)\.[0-9A-Z]+)|)"
                                         R"((?:\/\*(.*?)\*\/\n?)|)"
-                                        R"((?:\s*;(.*)\s?))";
+                                        R"((?:\s*;(.*)\s?)|)"
+                                        R"((?:\s+\n))";
 
     const std::regex mLabel{LABEL_REGEX};
 };

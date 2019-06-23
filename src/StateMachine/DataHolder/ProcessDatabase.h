@@ -14,6 +14,7 @@ private:
     std::string mFileContent;
     std::vector<std::string> mSections;
     std::string mCurrentAssembly;
+    std::vector<std::vector<std::string>> mCurrentParsedAssembly;
 public:
     void fileLocation(const std::string& fileLocation) noexcept;
 
@@ -34,6 +35,12 @@ public:
     [[nodiscard]] std::string currentAssembly() const noexcept;
 
     void currentAssembly(const std::string& assembly) noexcept;
+
+    [[nodiscard]] const std::vector<std::vector<std::string>>& currentparsedAssembly() const noexcept;
+
+    void addParsedAssembly(const std::vector<std::string>& assembly) noexcept;
+
+    void clearParsedAssembly();
 };
 
 
