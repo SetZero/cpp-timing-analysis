@@ -15,13 +15,16 @@ void ParseAssembly::execute() noexcept {
     for(const auto& v : lines) {
         tmpVector.clear();
         utils::split(tmpVector, v, ' ');
-
-        mProcessDatabase.addParsedAssembly(tmpVector);
+        if(std::all_of(std::begin(tmpVector), std::end(tmpVector), [](const std::string& element) {
+            return !element.empty();
+        })) {
+            mProcessDatabase.addParsedAssembly(tmpVector);
+        }
     }
 
     for(const auto& v1 : mProcessDatabase.currentparsedAssembly()) {
         for(const auto& v2 : v1) {
-            std::cout << v2 << " | ";
+            std::cout << v2 << " ";
         }
         std::cout << std::endl;
     }
