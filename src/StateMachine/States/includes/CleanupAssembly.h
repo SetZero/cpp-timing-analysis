@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <regex>
+#include <sstream>
 
 #include "../../BaseState.h"
 #include "../../DataHolder/ProcessDatabase.h"
