@@ -31,6 +31,7 @@ namespace avr {
     struct InstructionInfo {
         std::size_t wordLength;
         std::function<std::size_t()> calculator;
+        bool flowControlCommand = false;
     };
 
     using iVec = const std::vector<std::vector<std::string>>&;
@@ -111,9 +112,9 @@ namespace avr {
             {"ORI", { 1 , [](){return 1;}}},
             {"OUT", { 1 , [](){return 1;}}},
             {"POP", { 1 , [](){return 2;}}},
-            {"RET", { 1 , [](){return 4;}}},
-            {"RETI", { 1 , [](){return 4;}}},
-            {"RJMP", { 1 , [](){return 2;}}},
+            {"RET", { 1 , [](){return 4;}, true}},
+            {"RETI", { 1 , [](){return 4;}, true}},
+            {"RJMP", { 1 , [](){return 2;}, true}},
             {"ROL", { 1 , [](){return 1;}}},
             {"ROR", { 1 , [](){return 1;}}},
             {"SBC", { 1 , [](){return 1;}}},
