@@ -13,8 +13,10 @@ private:
     std::string mAssemblyLocation;
     std::string mFileContent;
     std::vector<std::string> mSections;
+
     std::string mCurrentAssembly;
     std::vector<std::vector<std::string>> mCurrentParsedAssembly;
+    std::size_t mCurrentTiming;
 public:
     void fileLocation(const std::string& fileLocation) noexcept;
 
@@ -41,6 +43,10 @@ public:
     void addParsedAssembly(const std::vector<std::string>& assembly) noexcept;
 
     void clearParsedAssembly();
+
+    void timing(std::size_t timing) noexcept;
+
+    [[nodiscard]] std::size_t timing() const noexcept;
 };
 
 

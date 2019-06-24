@@ -4,11 +4,14 @@
 
 #pragma once
 
+#include <string>
+#include <vector>
 
 #include "../TimingCalculation.h"
+#include "instructionTable.h"
 
 class AVRTimingCalculation : public BaseTimingCalculation {
-
+    [[nodiscard]] std::size_t calculateTiming(const std::vector<std::vector<std::string>>& assembly) const noexcept override;
 };
 
 

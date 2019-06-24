@@ -57,3 +57,11 @@ void ProcessDatabase::addParsedAssembly(const std::vector<std::string> &assembly
 void ProcessDatabase::clearParsedAssembly() {
     mCurrentParsedAssembly.clear();
 }
+
+void ProcessDatabase::timing(std::size_t timing) noexcept {
+    mCurrentTiming = timing;
+}
+
+std::size_t ProcessDatabase::timing() const noexcept {
+    return mCurrentTiming;
+}

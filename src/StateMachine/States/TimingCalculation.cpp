@@ -6,8 +6,12 @@
 
 void TimingCalculation::execute() noexcept {
     std::cout << "Timing Calculation" << std::endl;
+    mProcessDatabase.timing(
+            mImpl->calculateTiming(mProcessDatabase.currentparsedAssembly())
+            );
 }
 
-TimingCalculation::TimingCalculation(ProcessDatabase &pd) noexcept : BaseState{pd}, mImpl{std::make_unique<AVRTimingCalculation>()} {
+TimingCalculation::TimingCalculation(ProcessDatabase &pd) noexcept :
+    BaseState{pd}, mImpl{std::make_unique<AVRTimingCalculation>()} {
 
 }
