@@ -15,6 +15,9 @@ void ParseAssembly::execute() noexcept {
     for(const auto& v : lines) {
         tmpVector.clear();
         utils::split(tmpVector, v, ' ');
+        if(!tmpVector.empty()) {
+            utils::trim(tmpVector.at(0));
+        }
         if(std::all_of(std::begin(tmpVector), std::end(tmpVector), [](const std::string& element) {
             return !element.empty();
         })) {
@@ -22,12 +25,12 @@ void ParseAssembly::execute() noexcept {
         }
     }
 
-    for(const auto& v1 : mProcessDatabase.currentparsedAssembly()) {
+    /*for(const auto& v1 : mProcessDatabase.currentparsedAssembly()) {
         for(const auto& v2 : v1) {
             std::cout << v2 << " ";
         }
         std::cout << std::endl;
-    }
+    }*/
 }
 
 ParseAssembly::ParseAssembly(ProcessDatabase &pd) noexcept  : BaseState{pd} {

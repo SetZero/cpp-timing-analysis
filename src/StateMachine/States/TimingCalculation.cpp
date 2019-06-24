@@ -5,13 +5,13 @@
 #include "includes/TimingCalculation.h"
 
 void TimingCalculation::execute() noexcept {
-    std::cout << "Timing Calculation" << std::endl;
+    std::cout << "--- [ Timing Calculation ] ---" << std::endl;
     mProcessDatabase.timing(
             mImpl->calculateTiming(mProcessDatabase.currentparsedAssembly())
             );
+    std::cout << "Instructions needed: " << mProcessDatabase.timing() << std::endl;
 }
 
 TimingCalculation::TimingCalculation(ProcessDatabase &pd) noexcept :
     BaseState{pd}, mImpl{std::make_unique<AVRTimingCalculation>()} {
-
 }
