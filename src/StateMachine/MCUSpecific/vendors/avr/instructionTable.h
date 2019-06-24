@@ -29,6 +29,7 @@ namespace avr {
         std::size_t wordLength;
         std::function<std::size_t(const std::string&, bool)> calculator;
         bool flowControlCommand = false;
+        bool conditionalCommand = false;
     };
 
     using iVec = const std::vector<std::vector<std::string>>&;
@@ -112,9 +113,9 @@ namespace avr {
             {"ORI", { 1 , cycles<1>()}},
             {"OUT", { 1 , cycles<1>()}},
             {"POP", { 1 , cycles<2>()}},
-            {"RET", { 1 , cycles<4>(), true}},
-            {"RETI", { 1 , cycles<4>(), true}},
-            {"RJMP", { 1 , cycles<2>(), true}},
+            {"RET", { .wordLength = 1 , .calculator = cycles<4>(), .flowControlCommand = true}},
+            {"RETI", { .wordLength = 1 , .calculator = cycles<4>(), .flowControlCommand = true}},
+            {"RJMP", { .wordLength = 1 , .calculator = cycles<2>(), .flowControlCommand = true}},
             {"ROL", { 1 , cycles<1>()}},
             {"ROR", { 1 , cycles<1>()}},
             {"SBC", { 1 , cycles<1>()}},
@@ -143,7 +144,7 @@ namespace avr {
             {"WDR", { 1 , cycles<1>()}},
             {"XCH", { 1 , cycles<2>()}},
             {"PUSH", { 1 , cycles<2>()}},
-            {"SBIC", { 1 , [](const std::string& nextASM, bool likelyTrue) {
+            {"SBIC", { .wordLength = 1 , .calculator = [](const std::string& nextASM, bool likelyTrue) {
                 if(likelyTrue) {
                     if (instructionMap.at(nextASM).wordLength == 1)
                         return 2;
@@ -152,8 +153,8 @@ namespace avr {
                 } else {
                     return 1;
                 }
-            }}},
-            {"SBIS", { 1 , [](const std::string& nextASM, bool likelyTrue) {
+            }, .conditionalCommand = true}},
+            {"SBIS", { .wordLength = 1 , .calculator = [](const std::string& nextASM, bool likelyTrue) {
                 if(likelyTrue) {
                     if (instructionMap.at(nextASM).wordLength == 1)
                         return 2;
@@ -162,7 +163,7 @@ namespace avr {
                 } else {
                     return 1;
                 }
-            }}},
+            }, .conditionalCommand = true}},
             {"EICALL", { 1, cycles<4>()}},
             {"ICALL", { 1, cycles<4>()}},
             {"LDS", { 1, cycles<2>()}},
