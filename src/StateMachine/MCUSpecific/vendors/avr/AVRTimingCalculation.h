@@ -6,6 +6,7 @@
 
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "../TimingCalculation.h"
 #include "instructionTable.h"
