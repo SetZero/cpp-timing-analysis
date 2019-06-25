@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <regex>
 #include <unordered_map>
+#include <optional>
 
 #include "../TimingCalculation.h"
 #include "instructionTable.h"

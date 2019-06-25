@@ -17,8 +17,6 @@
  * https://www.microchip.com/webdoc/avrassembler/avrassembler.wb_LDD.html // more complex
  * https://www.microchip.com/webdoc/avrassembler/avrassembler.wb_LDD_Z.html // more complex
  * https://www.microchip.com/webdoc/avrassembler/avrassembler.wb_RCALL.html // 16 / 22b PC
- * https://www.microchip.com/webdoc/avrassembler/avrassembler.wb_SBIC.html //TODO
- * https://www.microchip.com/webdoc/avrassembler/avrassembler.wb_SBIS.html //TODO
  * https://www.microchip.com/webdoc/avrassembler/avrassembler.wb_SPM.html //depends?
  * https://www.microchip.com/webdoc/avrassembler/avrassembler.wb_ST.html // complex
  * https://www.microchip.com/webdoc/avrassembler/avrassembler.wb_STD.html // more complex
