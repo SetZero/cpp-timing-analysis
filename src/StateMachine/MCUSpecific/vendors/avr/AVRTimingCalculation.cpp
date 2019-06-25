@@ -78,7 +78,7 @@ AVRTimingCalculation::loopRange(std::size_t position, const std::vector<std::vec
         if(asmInfo == avr::instructionMap.end()) {
             currentPosition++;
             continue;
-        } if(asmInfo->second.conditionalCommand) {
+        } if(asmInfo->second.conditionalCommand && !asmInfo->second.flowControlCommand) {
             if(const auto& a = loopRange(currentPosition+1, assembly, branchInfo))
                 return a;
             else if(const auto& b = loopRange(currentPosition+2, assembly, branchInfo))
@@ -86,6 +86,11 @@ AVRTimingCalculation::loopRange(std::size_t position, const std::vector<std::vec
             else
                 return std::nullopt;
         } else if(asmInfo->second.flowControlCommand) {
+            if(asmInfo->second.conditionalCommand) {
+                if(const auto& loop = loopRange(currentPosition+1, assembly, branchInfo)) {
+                    return loop;
+                }
+            }
             const std::string& label = assembly[currentPosition][1];
             const auto& labelNumber = getLabelNumber(label);
             if(labelNumber) {
