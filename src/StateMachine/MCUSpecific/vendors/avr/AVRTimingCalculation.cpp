@@ -29,6 +29,8 @@ AVRTimingCalculation::calculateTiming(const std::vector<std::vector<std::string>
                 BranchInfo branchInfo{std::vector<std::size_t>{}, 0, 0};
                 const auto& loop = loopRange(i, assembly, branchInfo);
                 if(loop) {
+                    std::cout << "Loop from " << loop->first << " to " << loop->second << std::endl;
+
                     utils::erase_if(cyclesLineCounter, [&](std::pair<std::size_t, std::size_t> el) {
                         return el.first < loop->first || el.first > loop->second;
                     });
