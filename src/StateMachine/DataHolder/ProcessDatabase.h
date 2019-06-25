@@ -14,6 +14,7 @@ private:
     std::string mFileContent;
     std::vector<std::string> mSections;
 
+    std::size_t mCurrentPosition;
     std::string mCurrentAssembly;
     std::vector<std::vector<std::string>> mCurrentParsedAssembly;
     std::size_t mCurrentTiming;
@@ -33,6 +34,10 @@ public:
     [[nodiscard]] const std::vector<std::string>& getSections() const noexcept;
 
     [[nodiscard]] const std::string popSection() noexcept;
+
+    void position(std::size_t position) noexcept;
+
+    [[nodiscard]] std::size_t position() const noexcept;
 
     [[nodiscard]] std::string currentAssembly() const noexcept;
 

@@ -11,34 +11,38 @@ AVRTimingCalculation::calculateTiming(const std::vector<std::vector<std::string>
     for(std::size_t i = 0; i < assembly.size(); i++) {
         std::string instructionName = assembly.at(i).at(0);
         std::transform(instructionName.begin(), instructionName.end(), instructionName.begin(), ::toupper);
-        if(!isLabel(instructionName)) {
-            const auto &info = avr::instructionMap.find(instructionName);
-            if (info != avr::instructionMap.end()) {
-                if(info->second.conditionalCommand) {
-                    if(i + 1 < assembly.size()) {
-                        BranchInfo branchInfo{std::vector<std::size_t>{}, 0, 0};
-                        const auto& loop = loopRange(i, assembly, branchInfo);
-                        if(loop) {
-                            utils::erase_if(cyclesLineCounter, [&](std::pair<std::size_t, std::size_t> el) {
-                                return el.first < loop->first || el.first > loop->second;
-                            });
-                            cyclesLineCounter.emplace(i, info->second.calculator(assembly.at(i+1).at(0), false));
-                        } else {
-                            cyclesLineCounter.emplace(i, info->second.calculator(assembly.at(i+1).at(0), true));
-                        }
-                    } else {
-                        cyclesLineCounter.emplace(i, info->second.calculator("", false));
-                    }
-                } else {
-                    cyclesLineCounter.emplace(i, info->second.calculator("", false));
-                }
-            } else {
-                std::cout << "Unknown Instruction: " << instructionName << std::endl;
-            }
-        } else {
+
+        if(isLabel(instructionName)) {
             std::size_t number = *getLabelNumber(instructionName);
             labelMap.emplace(number, i);
+            continue;
         }
+
+        const auto &info = avr::instructionMap.find(instructionName);
+        if (info == avr::instructionMap.end()) {
+            std::cout << "Unknown Instruction: " << instructionName << std::endl;
+            continue;
+        }
+
+        if(info->second.conditionalCommand) {
+            if(i + 1 < assembly.size()) {
+                BranchInfo branchInfo{std::vector<std::size_t>{}, 0, 0};
+                const auto& loop = loopRange(i, assembly, branchInfo);
+                if(loop) {
+                    utils::erase_if(cyclesLineCounter, [&](std::pair<std::size_t, std::size_t> el) {
+                        return el.first < loop->first || el.first > loop->second;
+                    });
+                    cyclesLineCounter.emplace(i, info->second.calculator(assembly.at(i+1).at(0), false));
+                } else {
+                    cyclesLineCounter.emplace(i, info->second.calculator(assembly.at(i+1).at(0), true));
+                }
+            } else {
+                cyclesLineCounter.emplace(i, info->second.calculator("", false));
+            }
+            continue;
+        }
+
+        cyclesLineCounter.emplace(i, info->second.calculator("", false));
     }
     std::size_t cycles = 0;
     for(const auto& lineCycle : cyclesLineCounter) {

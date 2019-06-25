@@ -65,3 +65,11 @@ void ProcessDatabase::timing(std::size_t timing) noexcept {
 std::size_t ProcessDatabase::timing() const noexcept {
     return mCurrentTiming;
 }
+
+void ProcessDatabase::position(std::size_t position) noexcept {
+    mCurrentPosition = position;
+}
+
+std::size_t ProcessDatabase::position() const noexcept {
+    return mCurrentPosition;
+}
