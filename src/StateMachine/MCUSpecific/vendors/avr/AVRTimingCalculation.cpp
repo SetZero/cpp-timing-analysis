@@ -19,15 +19,9 @@ AVRTimingCalculation::calculateTiming(const std::vector<std::vector<std::string>
                         BranchInfo branchInfo{std::vector<std::size_t>{}, 0, 0};
                         const auto& loop = loopRange(i, assembly, branchInfo);
                         if(loop) {
-                            auto iter = cyclesLineCounter.begin();
-                            auto endIter = cyclesLineCounter.end();
-                            for(; iter != endIter;) {
-                                if(iter->first < loop->first || iter->first > loop->second) {
-                                    cyclesLineCounter.erase(iter++);
-                                } else {
-                                    ++iter;
-                                }
-                            }
+                            utils::erase_if(cyclesLineCounter, [&](std::pair<std::size_t, std::size_t> el) {
+                                return el.first < loop->first || el.first > loop->second;
+                            });
                             cyclesLineCounter.emplace(i, info->second.calculator(assembly.at(i+1).at(0), false));
                         } else {
                             cyclesLineCounter.emplace(i, info->second.calculator(assembly.at(i+1).at(0), true));
@@ -52,8 +46,6 @@ AVRTimingCalculation::calculateTiming(const std::vector<std::vector<std::string>
     }
     return cycles;
 }
-
-// create looprunner which follows labels to a next branch
 
 bool AVRTimingCalculation::isLabel(const std::string& str) const noexcept {
     return std::regex_match(std::begin(str), std::end(str), mLabel);
@@ -100,9 +92,9 @@ AVRTimingCalculation::loopRange(std::size_t position, const std::vector<std::vec
                 } else {
                     return {{branchInfo.startPosition, branchInfo.endPosition}};
                 }
+            } else {
+                return std::nullopt;
             }
-        } else if(currentASM == "RET") {
-            return std::nullopt;
         }
         if(currentPosition == position) {
             return {{branchInfo.startPosition, branchInfo.endPosition}};

@@ -12,6 +12,7 @@
 
 #include "../TimingCalculation.h"
 #include "instructionTable.h"
+#include "../../../../utils/containerUtils.h"
 
 struct BranchInfo {
     std::vector<std::size_t> branchPoints;
