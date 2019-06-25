@@ -8,6 +8,42 @@
 std::size_t
 AVRTimingCalculation::calculateTiming(const std::vector<std::vector<std::string>> &assembly) noexcept {
     std::map<std::size_t, std::size_t> cyclesLineCounter;
+    std::vector<std::pair<std::size_t, std::size_t>> loops;
+
+    for(std::size_t i = 0; i < assembly.size(); i++) {
+        std::string instructionName = assembly.at(i).at(0);
+        std::transform(instructionName.begin(), instructionName.end(), instructionName.begin(), ::toupper);
+        const auto &info = avr::instructionMap.find(instructionName);
+        if (info == avr::instructionMap.end()) {
+            continue;
+        }
+        if(info->second.flowControlCommand) {
+            BranchInfo branchInfo{std::vector<std::size_t>{}, 0, 0};
+            const auto& loop = loopRange(i, assembly, branchInfo);
+            if(loop) {
+                loops.push_back(*loop);
+            }
+        }
+    }
+
+    if(loops.size() >= 2) {
+        loops.erase(std::remove_if(std::begin(loops), std::end(loops), [&](const auto &l1) {
+            const auto &it = std::find_if(std::begin(loops), std::end(loops), [&](const auto &l2) {
+                if (l1.first == l2.first && l1.second < l2.second) {
+                    return true;
+                } else if (l1.first < l2.first && l1.second > l2.second) {
+                    return true;
+                } else
+                    return l1.first < l2.first && l1.second < l2.second;
+            });
+            return it != std::end(loops);
+        }));
+    }
+
+    for(const auto& c : loops) {
+        std::cout << "Found loop: " << c.first << " to " << c.second << std::endl;
+    }
+
     for(std::size_t i = 0; i < assembly.size(); i++) {
         std::string instructionName = assembly.at(i).at(0);
         std::transform(instructionName.begin(), instructionName.end(), instructionName.begin(), ::toupper);
@@ -25,30 +61,20 @@ AVRTimingCalculation::calculateTiming(const std::vector<std::vector<std::string>
         }
 
         if(info->second.flowControlCommand) {
-            //if(i + 1 < assembly.size()) {
-                BranchInfo branchInfo{std::vector<std::size_t>{}, 0, 0};
-                const auto& loop = loopRange(i, assembly, branchInfo);
-                if(loop) {
-                    //todo: if one "loop" starts inside of another this is most likely a loop escape and will be called
-                    //todo: only once, also the "loop" which starts first will be the main loop the other one is only a
-                    //todo: if clause and not really a loop
-                    std::cout << "Loop from " << loop->first << " to " << loop->second << std::endl;
-
-                    utils::erase_if(cyclesLineCounter, [&](std::pair<std::size_t, std::size_t> el) {
-                        return el.first < loop->first || el.first > loop->second;
-                    });
-                    cyclesLineCounter.emplace(i, info->second.calculator(assembly.at(i).at(0), false));
-                } else {
-                    cyclesLineCounter.emplace(i, info->second.calculator(assembly.at(i).at(0), true));
-                }
-            //} else {
-            //    cyclesLineCounter.emplace(i, info->second.calculator("", false));
-            //}
+            const auto& it = std::find_if(std::begin(loops), std::end(loops), [&](const auto& el) {
+                return el.first == i || el.second == i;
+            });
+            cyclesLineCounter.emplace(i, info->second.calculator(assembly.at(i).at(0), it != std::end(loops)));
             continue;
         }
 
         cyclesLineCounter.emplace(i, info->second.calculator("", false));
     }
+
+    utils::erase_if(cyclesLineCounter, [&](std::pair<std::size_t, std::size_t> el) {
+        return el.first < loops.at(0).first || el.first > loops.at(0).second;
+    });
+
     std::size_t cycles = 0;
     for(const auto& lineCycle : cyclesLineCounter) {
         cycles += lineCycle.second;
