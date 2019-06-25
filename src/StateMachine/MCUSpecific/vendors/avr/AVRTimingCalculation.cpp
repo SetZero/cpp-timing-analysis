@@ -7,7 +7,7 @@
 
 std::size_t
 AVRTimingCalculation::calculateTiming(const std::vector<std::vector<std::string>> &assembly) noexcept {
-    std::size_t cycles = 0;
+    std::map<std::size_t, std::size_t> cyclesLineCounter;
     for(std::size_t i = 0; i < assembly.size(); i++) {
         std::string instructionName = assembly.at(i).at(0);
         std::transform(instructionName.begin(), instructionName.end(), instructionName.begin(), ::toupper);
@@ -16,13 +16,27 @@ AVRTimingCalculation::calculateTiming(const std::vector<std::vector<std::string>
             if (info != avr::instructionMap.end()) {
                 if(info->second.conditionalCommand) {
                     if(i + 1 < assembly.size()) {
-                        loopRange(i, assembly);
-                        cycles += info->second.calculator(assembly.at(i+1).at(0), false);
+                        BranchInfo branchInfo{std::vector<std::size_t>{}, 0, 0};
+                        const auto& loop = loopRange(i, assembly, branchInfo);
+                        if(loop) {
+                            auto iter = cyclesLineCounter.begin();
+                            auto endIter = cyclesLineCounter.end();
+                            for(; iter != endIter;) {
+                                if(iter->first < loop->first || iter->first > loop->second) {
+                                    cyclesLineCounter.erase(iter++);
+                                } else {
+                                    ++iter;
+                                }
+                            }
+                            cyclesLineCounter.emplace(i, info->second.calculator(assembly.at(i+1).at(0), false));
+                        } else {
+                            cyclesLineCounter.emplace(i, info->second.calculator(assembly.at(i+1).at(0), true));
+                        }
                     } else {
-                        cycles += info->second.calculator("", false);
+                        cyclesLineCounter.emplace(i, info->second.calculator("", false));
                     }
                 } else {
-                    cycles += info->second.calculator("", false);
+                    cyclesLineCounter.emplace(i, info->second.calculator("", false));
                 }
             } else {
                 std::cout << "Unknown Instruction: " << instructionName << std::endl;
@@ -31,6 +45,10 @@ AVRTimingCalculation::calculateTiming(const std::vector<std::vector<std::string>
             std::size_t number = *getLabelNumber(instructionName);
             labelMap.emplace(number, i);
         }
+    }
+    std::size_t cycles = 0;
+    for(const auto& lineCycle : cyclesLineCounter) {
+        cycles += lineCycle.second;
     }
     return cycles;
 }
@@ -52,12 +70,8 @@ std::optional<std::size_t> AVRTimingCalculation::getLabelNumber(const std::strin
 }
 
 std::optional<std::pair<std::size_t, std::size_t>>
-AVRTimingCalculation::loopRange(std::size_t position, const std::vector<std::vector<std::string>> &assembly) const noexcept {
+AVRTimingCalculation::loopRange(std::size_t position, const std::vector<std::vector<std::string>> &assembly, BranchInfo& branchInfo) const noexcept {
     std::size_t currentPosition = position;
-    std::vector<std::size_t> branchPoints;
-
-    std::size_t lastBranchStart = 0;
-    std::size_t lastBranchEnd = 0;
 
     while(true) {
         std::string currentASM = assembly[currentPosition][0];
@@ -67,9 +81,9 @@ AVRTimingCalculation::loopRange(std::size_t position, const std::vector<std::vec
             currentPosition++;
             continue;
         } if(asmInfo->second.conditionalCommand) {
-            if(const auto& a = loopRange(currentPosition+1, assembly))
+            if(const auto& a = loopRange(currentPosition+1, assembly, branchInfo))
                 return a;
-            else if(const auto& b = loopRange(currentPosition+2, assembly))
+            else if(const auto& b = loopRange(currentPosition+2, assembly, branchInfo))
                 return b;
             else
                 return std::nullopt;
@@ -77,21 +91,21 @@ AVRTimingCalculation::loopRange(std::size_t position, const std::vector<std::vec
             const std::string& label = assembly[currentPosition][1];
             const auto& labelNumber = getLabelNumber(label);
             if(labelNumber) {
-                if(std::find(std::begin(branchPoints), std::end(branchPoints), currentPosition) != branchPoints.end()) {
-                    branchPoints.push_back(currentPosition);
-                    lastBranchEnd = currentPosition;
+                if(std::find(std::begin(branchInfo.branchPoints), std::end(branchInfo.branchPoints), currentPosition) == branchInfo.branchPoints.end()) {
+                    branchInfo.branchPoints.push_back(currentPosition);
+                    branchInfo.endPosition = currentPosition;
                     currentPosition = labelMap.at(*labelNumber) + 1;
-                    lastBranchStart = currentPosition;
+                    branchInfo.startPosition = currentPosition;
                     continue;
                 } else {
-                    return {{lastBranchStart, lastBranchEnd}};
+                    return {{branchInfo.startPosition, branchInfo.endPosition}};
                 }
             }
         } else if(currentASM == "RET") {
             return std::nullopt;
         }
         if(currentPosition == position) {
-            return {{lastBranchStart, lastBranchEnd}};
+            return {{branchInfo.startPosition, branchInfo.endPosition}};
         }
         currentPosition++;
         if(currentPosition >= assembly.size()) return std::nullopt;

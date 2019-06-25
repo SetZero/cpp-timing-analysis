@@ -13,6 +13,12 @@
 #include "../TimingCalculation.h"
 #include "instructionTable.h"
 
+struct BranchInfo {
+    std::vector<std::size_t> branchPoints;
+    std::size_t startPosition;
+    std::size_t endPosition;
+};
+
 class AVRTimingCalculation : public BaseTimingCalculation {
 public:
     [[nodiscard]] std::size_t calculateTiming(const std::vector<std::vector<std::string>>& assembly) noexcept override;
@@ -24,7 +30,7 @@ private:
     [[nodiscard]] bool isLabel(const std::string& str) const noexcept;
     [[nodiscard]] std::optional<std::size_t> getLabelNumber(const std::string& str) const noexcept;
     [[nodiscard]] std::optional<std::pair<std::size_t, std::size_t>>
-        loopRange(std::size_t position, const std::vector<std::vector<std::string>> &assembly) const noexcept;
+        loopRange(std::size_t position, const std::vector<std::vector<std::string>> &assembly, BranchInfo& branchPoints) const noexcept;
 };
 
 
