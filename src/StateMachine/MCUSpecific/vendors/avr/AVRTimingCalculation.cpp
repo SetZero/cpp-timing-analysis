@@ -29,6 +29,9 @@ AVRTimingCalculation::calculateTiming(const std::vector<std::vector<std::string>
                 BranchInfo branchInfo{std::vector<std::size_t>{}, 0, 0};
                 const auto& loop = loopRange(i, assembly, branchInfo);
                 if(loop) {
+                    //todo: if one "loop" starts inside of another this is most likely a loop escape and will be called
+                    //todo: only once, also the "loop" which starts first will be the main loop the other one is only a
+                    //todo: if clause and not really a loop
                     std::cout << "Loop from " << loop->first << " to " << loop->second << std::endl;
 
                     utils::erase_if(cyclesLineCounter, [&](std::pair<std::size_t, std::size_t> el) {
