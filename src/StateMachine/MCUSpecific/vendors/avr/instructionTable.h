@@ -49,7 +49,7 @@ namespace avr {
             {"BRCC", { 1 , cycles<1>()}},
             {"BRCS", { 1 , cycles<1>()}},
             {"BREAK", { 1 , cycles<1>()}},
-            {"BREQ", { 1 , cycles<1>()}},
+            {"BREQ", { .wordLength = 1 , .calculator = cycles<1>(), .flowControlCommand = true }},
             {"BRGE", { 1 , cycles<1>()}},
             {"BRHC", { 1 , cycles<1>()}},
             {"BRHS", { 1 , cycles<1>()}},

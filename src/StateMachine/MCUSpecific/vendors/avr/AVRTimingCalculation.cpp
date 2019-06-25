@@ -24,8 +24,8 @@ AVRTimingCalculation::calculateTiming(const std::vector<std::vector<std::string>
             continue;
         }
 
-        if(info->second.conditionalCommand) {
-            if(i + 1 < assembly.size()) {
+        if(info->second.flowControlCommand) {
+            //if(i + 1 < assembly.size()) {
                 BranchInfo branchInfo{std::vector<std::size_t>{}, 0, 0};
                 const auto& loop = loopRange(i, assembly, branchInfo);
                 if(loop) {
@@ -34,13 +34,13 @@ AVRTimingCalculation::calculateTiming(const std::vector<std::vector<std::string>
                     utils::erase_if(cyclesLineCounter, [&](std::pair<std::size_t, std::size_t> el) {
                         return el.first < loop->first || el.first > loop->second;
                     });
-                    cyclesLineCounter.emplace(i, info->second.calculator(assembly.at(i+1).at(0), false));
+                    cyclesLineCounter.emplace(i, info->second.calculator(assembly.at(i).at(0), false));
                 } else {
-                    cyclesLineCounter.emplace(i, info->second.calculator(assembly.at(i+1).at(0), true));
+                    cyclesLineCounter.emplace(i, info->second.calculator(assembly.at(i).at(0), true));
                 }
-            } else {
-                cyclesLineCounter.emplace(i, info->second.calculator("", false));
-            }
+            //} else {
+            //    cyclesLineCounter.emplace(i, info->second.calculator("", false));
+            //}
             continue;
         }
 
@@ -68,7 +68,7 @@ std::optional<std::size_t> AVRTimingCalculation::getLabelNumber(const std::strin
 }
 
 std::optional<std::pair<std::size_t, std::size_t>>
-AVRTimingCalculation::loopRange(std::size_t position, const std::vector<std::vector<std::string>> &assembly, BranchInfo& branchInfo) const noexcept {
+AVRTimingCalculation::loopRange(std::size_t position, const std::vector<std::vector<std::string>> &assembly, BranchInfo& branchInfo) noexcept {
     std::size_t currentPosition = position;
 
     while(true) {
@@ -92,20 +92,53 @@ AVRTimingCalculation::loopRange(std::size_t position, const std::vector<std::vec
                 if(std::find(std::begin(branchInfo.branchPoints), std::end(branchInfo.branchPoints), currentPosition) == branchInfo.branchPoints.end()) {
                     branchInfo.branchPoints.push_back(currentPosition);
                     branchInfo.endPosition = currentPosition;
-                    currentPosition = labelMap.at(*labelNumber) + 1;
+                    const auto& labelPos = labelMap.find(*labelNumber);
+                    if(labelPos != labelMap.end()) {
+                        currentPosition = labelPos->second + 1;
+                    } else {
+                        const auto& number = findLabelPosition(*labelNumber, assembly);
+                        if(number) {
+                            currentPosition = *number + 1;
+                            labelMap.emplace(*labelNumber, *number);
+                        }
+                    }
                     branchInfo.startPosition = currentPosition;
-                    continue;
+                    if(currentPosition >= assembly.size()) {
+                        return branchInfoCheck(branchInfo);
+                    } else {
+                        continue;
+                    }
                 } else {
-                    return {{branchInfo.startPosition, branchInfo.endPosition}};
+                    return branchInfoCheck(branchInfo);
                 }
             } else {
                 return std::nullopt;
             }
         }
         if(currentPosition == position) {
-            return {{branchInfo.startPosition, branchInfo.endPosition}};
+            return branchInfoCheck(branchInfo);
         }
         currentPosition++;
         if(currentPosition >= assembly.size()) return std::nullopt;
     }
+}
+
+std::optional<std::size_t>
+AVRTimingCalculation::findLabelPosition(std::size_t labelNumber, const std::vector<std::vector<std::string>> &assembly) const noexcept {
+    for(std::size_t i = 0; i < assembly.size(); i++) {
+        if(auto number = getLabelNumber(assembly[i][0])) {
+            if(labelNumber == *number) {
+                return i;
+            }
+        }
+    }
+    return std::nullopt;
+}
+
+std::optional<std::pair<std::size_t, std::size_t>>
+AVRTimingCalculation::branchInfoCheck(const BranchInfo &branchPoints) const noexcept {
+    const auto& start = std::min(branchPoints.startPosition, branchPoints.endPosition);
+    const auto& stop = std::max(branchPoints.startPosition, branchPoints.endPosition);
+    if(start == stop) return std::nullopt;
+    else return {{start, stop}};
 }

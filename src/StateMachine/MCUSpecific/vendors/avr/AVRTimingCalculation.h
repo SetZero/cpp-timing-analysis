@@ -32,7 +32,9 @@ private:
     [[nodiscard]] bool isLabel(const std::string& str) const noexcept;
     [[nodiscard]] std::optional<std::size_t> getLabelNumber(const std::string& str) const noexcept;
     [[nodiscard]] std::optional<std::pair<std::size_t, std::size_t>>
-        loopRange(std::size_t position, const std::vector<std::vector<std::string>> &assembly, BranchInfo& branchPoints) const noexcept;
+        loopRange(std::size_t position, const std::vector<std::vector<std::string>> &assembly, BranchInfo& branchPoints) noexcept;
+    [[nodiscard]] std::optional<std::size_t> findLabelPosition(std::size_t labelNumber, const std::vector<std::vector<std::string>>& assembly) const noexcept;
+    [[nodiscard]] std::optional<std::pair<std::size_t, std::size_t>> branchInfoCheck(const BranchInfo& branchPoints) const noexcept;
 };
 
 
