@@ -22,8 +22,25 @@ void TimingInsertion::execute() noexcept {
     std::string timingString = "$1 ";
     timingString.append(std::to_string(mProcessDatabase.timing()));
 
-    std::regex_replace (std::ostreambuf_iterator<char>(std::cout), value.begin(), value.end(), regex, timingString);
-    //std::cout << "New Value: " << value << std::endl;
+    std::regex_replace (std::back_inserter(newValue), std::begin(value), std::end(value), regex, timingString);
+    const std::size_t position = mProcessDatabase.position();
+
+    const auto startPosition = utils::findNthSubStr(position+1, std::string(ProcessDatabase::START_DELIMITER), mProcessDatabase.fileContents());
+    const auto stopPosition = utils::findNthSubStr(position+1, std::string(ProcessDatabase::STOP_DELIMITER), mProcessDatabase.fileContents());
+    if(startPosition && stopPosition) {
+        if(*startPosition < *stopPosition) {
+            auto newContent = mProcessDatabase.fileContents();
+            newContent.replace(*startPosition, *stopPosition - *startPosition, newValue);
+            std::cout << "Start: " << *startPosition << ", Stop: " << *stopPosition << std::endl;
+            //mProcessDatabase.fileContents(newContent);
+        } else {
+          /*  for(auto it = mProcessDatabase.fileContents().begin() + *startPosition; it != mProcessDatabase.fileContents().end(); it++) {
+                std::cout << *it;
+           }*/
+           std::cout << "Start: " << *startPosition << ", Stop: " << *stopPosition << std::endl;
+        }
+    }
+
     mProcessDatabase.position(mProcessDatabase.position() + 1);
 }
 

@@ -73,3 +73,10 @@ void ProcessDatabase::position(std::size_t position) noexcept {
 std::size_t ProcessDatabase::position() const noexcept {
     return mCurrentPosition;
 }
+
+void ProcessDatabase::clearTemporary() noexcept {
+    mCurrentTiming = 0;
+    mCurrentAssembly = "";
+    mCurrentParsedAssembly = {};
+    mCurrentPosition = 0;
+}

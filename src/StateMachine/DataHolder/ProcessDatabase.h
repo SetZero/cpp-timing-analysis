@@ -8,17 +8,25 @@
 #include <string>
 #include <string_view>
 
+struct PositionInfo {
+    std::size_t start;
+    std::size_t stop;
+};
+
 class ProcessDatabase {
 private:
     std::string mAssemblyLocation;
     std::string mFileContent;
     std::vector<std::string> mSections;
 
-    std::size_t mCurrentPosition;
+    std::size_t mCurrentPosition = 0;
     std::string mCurrentAssembly;
     std::vector<std::vector<std::string>> mCurrentParsedAssembly;
-    std::size_t mCurrentTiming;
+    std::size_t mCurrentTiming = 0;
 public:
+    static constexpr std::string_view START_DELIMITER{";START_MEASUREMENT"};
+    static constexpr std::string_view STOP_DELIMITER{";STOP_MEASUREMENT"};
+
     void fileLocation(const std::string& fileLocation) noexcept;
 
     [[nodiscard]] std::string fileLocation() const noexcept;
@@ -52,6 +60,8 @@ public:
     void timing(std::size_t timing) noexcept;
 
     [[nodiscard]] std::size_t timing() const noexcept;
+
+    void clearTemporary() noexcept;
 };
 
 

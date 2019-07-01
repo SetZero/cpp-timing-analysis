@@ -58,3 +58,17 @@ std::string utils::trim_copy(std::string s) {
     trim(s);
     return s;
 }
+
+[[nodiscard]] std::optional<std::size_t> utils::findNthSubStr(std::size_t n, const std::string& subString, const std::string& string) {
+    std::string::size_type i = string.find(subString);
+    std::string::size_type adv = subString.length();
+
+    std::size_t j;
+    for (j = 1; j < n && i != std::string::npos; ++j)
+        i = string.find(subString, i+adv);
+
+    if (j == n)
+        return i;
+    else
+        return std::nullopt;
+}

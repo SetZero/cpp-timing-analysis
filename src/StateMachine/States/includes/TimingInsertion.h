@@ -9,6 +9,7 @@
 
 #include "../../BaseState.h"
 #include "../../DataHolder/ProcessDatabase.h"
+#include "../../../utils/stringUtils.h"
 
 class TimingInsertion : public BaseState {
 private:

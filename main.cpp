@@ -50,4 +50,6 @@ int main(int argc, const char* argv[]) {
     do {
         stateChain.current()->execute();
     } while (stateChain.next());
+
+    //std::cout << database.fileContents() << std::endl;
 }
