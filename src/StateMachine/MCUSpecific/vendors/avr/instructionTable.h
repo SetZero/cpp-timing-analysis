@@ -57,7 +57,7 @@ namespace avr {
             {"BRIE", { 1 , cycles<1>()}},
             {"BRLO", { 1 , cycles<1>()}},
             {"BRMI", { 1 , cycles<1>()}},
-            {"BRNE", { 1 , cycles<1>()}},
+            {"BRNE", { .wordLength = 1 , .calculator = cycles<1>(), .flowControlCommand = true, .conditionalCommand = true }},
             {"BRPL", { 1 , cycles<1>()}},
             {"BRSH", { 1 , cycles<1>()}},
             {"BRTC", { 1 , cycles<1>()}},
@@ -165,5 +165,7 @@ namespace avr {
             {"EICALL", { 1, cycles<4>()}},
             {"ICALL", { 1, cycles<4>()}},
             {"LDS", { 1, cycles<2>()}},
+            {"LDD", { 1, cycles<2>()}},
+            {"STD", { 1, cycles<2>()}},
     };
 }
