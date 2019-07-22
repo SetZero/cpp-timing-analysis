@@ -10,14 +10,18 @@
 class Parse {
 private:
     std::string assemblyLocation;
+    std::string mArch;
     bool showHelp = false;
     clara::Parser cli;
 public:
     Parse(int argc, const char* argv[]) noexcept {
         cli = clara::Help( showHelp )
-              | clara::Opt(assemblyLocation, "config" )
-              ["-a"]["--asm"]
-                      ("Assembly Location");
+                  | clara::Opt(assemblyLocation, "config" )
+                  ["-a"]["--asm"]
+                          ("Assembly Location")
+                  | clara::Opt(mArch, "config" )
+                  ["-i"]["--arch"]
+                          ("CPU Architecture / Instruction Set");
 
         auto result = cli.parse( clara::Args( argc, argv ) );
         if(!result) {
@@ -32,6 +36,10 @@ public:
 
     [[nodiscard]] std::string asmLocation() const noexcept {
         return assemblyLocation;
+    }
+
+    [[nodiscard]] std::string arch() const noexcept {
+        return mArch;
     }
 
     explicit operator bool() const {

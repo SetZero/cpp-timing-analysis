@@ -4,6 +4,11 @@
 
 #pragma once
 
+struct BranchInfo {
+    std::vector<std::size_t> branchPoints;
+    std::size_t startPosition;
+    std::size_t endPosition;
+};
 
 class BaseTimingCalculation {
 public:

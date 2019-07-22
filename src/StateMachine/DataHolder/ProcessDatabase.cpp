@@ -80,3 +80,26 @@ void ProcessDatabase::clearTemporary() noexcept {
     mCurrentParsedAssembly = {};
     mCurrentPosition = 0;
 }
+
+void ProcessDatabase::arch(const std::string &fileLocation) noexcept {
+    std::string tmpArch = fileLocation;
+    std::transform(tmpArch.begin(), tmpArch.end(), tmpArch.begin(), ::tolower);
+    std::string comment = "";
+    if(tmpArch == "arm") {
+        mArch = Architectures::ARM;
+        comment = "@";
+    } else if(tmpArch == "avr") {
+        mArch = Architectures ::AVR;
+        comment = ";";
+    } else {
+        mArch = Architectures ::AVR;
+        comment = ";";
+    }
+
+    START_DELIMITER = comment + "START_MEASUREMENT\n";
+    STOP_DELIMITER = comment + "STOP_MEASUREMENT\n";
+}
+
+Architectures ProcessDatabase::arch() const noexcept {
+    return mArch;
+}

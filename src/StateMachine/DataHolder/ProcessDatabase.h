@@ -13,8 +13,14 @@ struct PositionInfo {
     std::size_t stop;
 };
 
+enum class Architectures {
+    AVR,
+    ARM
+};
+
 class ProcessDatabase {
 private:
+    Architectures mArch;
     std::string mAssemblyLocation;
     std::string mFileContent;
     std::vector<std::string> mSections;
@@ -24,12 +30,16 @@ private:
     std::vector<std::vector<std::string>> mCurrentParsedAssembly;
     std::size_t mCurrentTiming = 0;
 public:
-    static constexpr std::string_view START_DELIMITER{";START_MEASUREMENT"};
-    static constexpr std::string_view STOP_DELIMITER{";STOP_MEASUREMENT"};
+    std::string START_DELIMITER;
+    std::string STOP_DELIMITER;
 
     void fileLocation(const std::string& fileLocation) noexcept;
 
     [[nodiscard]] std::string fileLocation() const noexcept;
+
+    void arch(const std::string& fileLocation) noexcept;
+
+    [[nodiscard]] Architectures arch() const noexcept;
 
     void fileContents(const std::string& fileLocation) noexcept;
 

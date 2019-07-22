@@ -30,6 +30,7 @@ int main(int argc, const char* argv[]) {
 
     ProcessDatabase database;
     database.fileLocation(clParser.asmLocation());
+    database.arch(clParser.arch());
 
     LoadAssembly loadAssembly{ database };
     SplitAssembly splitAssembly{ database };

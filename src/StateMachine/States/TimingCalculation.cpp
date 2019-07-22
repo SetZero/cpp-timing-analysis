@@ -13,5 +13,13 @@ void TimingCalculation::execute() noexcept {
 }
 
 TimingCalculation::TimingCalculation(ProcessDatabase &pd) noexcept :
-    BaseState{pd}, mImpl{std::make_unique<AVRTimingCalculation>()} {
+    BaseState{pd} {
+    switch(mProcessDatabase.arch()) {
+        case Architectures::AVR:
+            mImpl = std::make_unique<ARMTimingCalculation>();
+            break;
+        case Architectures::ARM:
+            mImpl = std::make_unique<ARMTimingCalculation>();
+            break;
+    }
 }

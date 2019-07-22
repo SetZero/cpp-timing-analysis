@@ -11,6 +11,7 @@
 #include "../../DataHolder/ProcessDatabase.h"
 #include "../../MCUSpecific/vendors/TimingCalculation.h"
 #include "../../MCUSpecific/vendors/avr/AVRTimingCalculation.h"
+#include "../../MCUSpecific/vendors/arm/ARMTimingCalculation.h"
 
 class TimingCalculation : public BaseState {
 public:

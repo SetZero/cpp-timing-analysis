@@ -15,12 +15,6 @@
 #include "instructionTable.h"
 #include "../../../../utils/containerUtils.h"
 
-struct BranchInfo {
-    std::vector<std::size_t> branchPoints;
-    std::size_t startPosition;
-    std::size_t endPosition;
-};
-
 class AVRTimingCalculation : public BaseTimingCalculation {
 public:
     [[nodiscard]] std::size_t calculateTiming(const std::vector<std::vector<std::string>>& assembly) noexcept override;

@@ -25,8 +25,8 @@ void TimingInsertion::execute() noexcept {
     std::regex_replace (std::back_inserter(newValue), std::begin(value), std::end(value), regex, timingString);
     const std::size_t position = mProcessDatabase.position();
 
-    const auto startPosition = utils::findNthSubStr(position+1, std::string(ProcessDatabase::START_DELIMITER), mProcessDatabase.fileContents());
-    const auto stopPosition = utils::findNthSubStr(position+1, std::string(ProcessDatabase::STOP_DELIMITER), mProcessDatabase.fileContents());
+    auto startPosition = utils::findNthSubStr(position+1, std::string(mProcessDatabase.START_DELIMITER), mProcessDatabase.fileContents());
+    auto stopPosition = utils::findNthSubStr(position+1, std::string(mProcessDatabase.STOP_DELIMITER), mProcessDatabase.fileContents());
     if(startPosition && stopPosition) {
         if(*startPosition < *stopPosition) {
             auto newContent = mProcessDatabase.fileContents();

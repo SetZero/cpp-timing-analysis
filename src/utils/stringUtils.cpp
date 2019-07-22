@@ -5,9 +5,9 @@
 #include "stringUtils.h"
 
 void utils::split(std::vector<std::string> &strs, const std::string &txt,  char ch) noexcept {
+    strs.clear();
     size_t pos = txt.find( ch );
     size_t initialPos = 0;
-    strs.clear();
 
     while( pos != std::string::npos ) {
         strs.push_back( txt.substr( initialPos, pos - initialPos ) );
